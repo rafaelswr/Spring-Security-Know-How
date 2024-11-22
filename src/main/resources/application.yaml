@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: "SpringSecurity"
+  devtools:
+    restart:
+      enabled: true
+  main:
+    banner-mode: off
+
+
+server:
+  ssl:
+    key-store: ${SSL_KEYSTORE}
+    key-store-password: ${SSL_KEYSTORE_PASSWORD}
+    key-store-type: ${SSL_KEYSTORE_TYPE}
+    key-alias: ${SSL_KEY_ALIAS}
+    key-password: ${SSL_KEY_PASSWORD}
+  port: ${SERVER_PORT}
