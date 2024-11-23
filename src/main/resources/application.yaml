@@ -7,7 +7,6 @@ spring:
   main:
     banner-mode: off
 
-
 server:
   ssl:
     key-store: ${SSL_KEYSTORE}
