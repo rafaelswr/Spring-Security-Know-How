@@ -1,5 +1,6 @@
 package com.rafaelswr.springsecurityindeep.config;
 
+import com.rafaelswr.springsecurityindeep.model.AuthUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationProvider;

@@ -17,4 +17,15 @@ public class HelloController {
         return new ResponseEntity<>("Hello!", HttpStatus.OK);
     }
 
+    @GetMapping("/other")
+    public ResponseEntity<String> sayOther(){
+        return new ResponseEntity<>("Only if you have READ privileges!", HttpStatus.OK);
+    }
+
+    @GetMapping("/public")
+    public ResponseEntity<String> publicAccess(){
+        return new ResponseEntity<>("You're in public domain!", HttpStatus.OK);
+    }
+
+
 }

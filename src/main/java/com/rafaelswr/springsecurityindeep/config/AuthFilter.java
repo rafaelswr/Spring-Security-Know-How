@@ -30,7 +30,8 @@ public class AuthFilter {
                         request.anyRequest().permitAll();
                     }).formLogin(Customizer.withDefaults());
 
-            
+            httpSecurity.authenticationProvider(authenticationProvider);
+
             return httpSecurity.build();
     }
 
