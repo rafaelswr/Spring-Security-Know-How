@@ -27,10 +27,14 @@ public class AuthFilter {
             httpSecurity.authorizeHttpRequests(request->{
                         request.requestMatchers("/hello").authenticated();
                         request.requestMatchers("/other").hasRole("read");
+                        request.requestMatchers("/user/create").permitAll();
                         request.anyRequest().permitAll();
+
                     }).formLogin(Customizer.withDefaults());
 
             httpSecurity.authenticationProvider(authenticationProvider);
+
+            httpSecurity.csrf().disable();
 
             return httpSecurity.build();
     }

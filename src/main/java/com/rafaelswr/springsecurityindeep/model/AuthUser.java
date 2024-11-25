@@ -1,5 +1,11 @@
 package com.rafaelswr.springsecurityindeep.model;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Generated;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,12 +14,25 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class AuthUser implements UserDetails {
 
-    private final SimpleUser simpleUser;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="simpleUser", referencedColumnName = "id")
+    private SimpleUser simpleUser;
+
     private String username;
     private String password;
     private String authority;
+
+    private Boolean enabled = true;
 
     public AuthUser(SimpleUser simpleUser, String username, String password, String authority) {
         this.simpleUser = simpleUser;

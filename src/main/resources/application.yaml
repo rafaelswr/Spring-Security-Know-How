@@ -6,6 +6,16 @@ spring:
       enabled: true
   main:
     banner-mode: off
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+  datasource:
+    url: ${POSTGRESQL_URL}
+    username: ${POSTGRESQL_USERNAME}
+    password: ${POSTGRESQL_PASSWORD}
+    driver-class-name: org.postgresql.Driver
 
 server:
   ssl:

@@ -34,6 +34,7 @@ public class AuthProviderConf implements AuthenticationProvider {
         String username = authentication.getName();
         String password = String.valueOf(authentication.getCredentials());
 
+        //UserDetails findUser = userDetailsService.loadUserByUsername(username);
         UserDetails findUser = userDetailsService.loadUserByUsername(username);
 
         System.out.println("USER FOUND: "+findUser.getUsername()+","+findUser.getPassword());
