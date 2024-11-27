@@ -18,6 +18,8 @@ public class SimpleUser {
     private String fname;
     private String lname;
 
+    private String creditCardNumber;
+
     @OneToOne(mappedBy = "simpleUser")
     private AuthUser authUser;
 
