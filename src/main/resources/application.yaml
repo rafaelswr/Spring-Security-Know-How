@@ -25,3 +25,6 @@ server:
     key-alias: ${SSL_KEY_ALIAS}
     key-password: ${SSL_KEY_PASSWORD}
   port: ${SERVER_PORT}
+
+auth:
+  value: ${AUTH_KEY}

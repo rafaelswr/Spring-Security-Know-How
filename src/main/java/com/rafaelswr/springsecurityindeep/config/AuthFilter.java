@@ -1,6 +1,8 @@
 package com.rafaelswr.springsecurityindeep.config;
 
+import com.rafaelswr.springsecurityindeep.filters.AuthenticationLoggingFilter;
 import com.rafaelswr.springsecurityindeep.filters.RequestValidationFilter;
+import com.rafaelswr.springsecurityindeep.filters.StaticKeyAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,10 +26,13 @@ public class AuthFilter {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
-            //(demo) filter that make a validation if the request has a header called Request-ID (example)
-            httpSecurity.addFilterBefore(new RequestValidationFilter(), BasicAuthenticationFilter.class);
+            // (Demo) Filter that validates if the request contains a header called 'Request-ID' (example),
+            // and another one after the BasicAuthenticationFilter to log the value of the 'Request-ID' header.
+            httpSecurity.addFilterBefore(new RequestValidationFilter(), BasicAuthenticationFilter.class)
+                    .addFilterAt(new StaticKeyAuthenticationFilter(), BasicAuthenticationFilter.class).addFilterAfter(new AuthenticationLoggingFilter(), BasicAuthenticationFilter.class);
 
-            // httpSecurity.httpBasic(Customizer.withDefaults());
+            httpSecurity.httpBasic(Customizer.withDefaults());
+
             httpSecurity.authorizeHttpRequests(request->{
                         request.requestMatchers("/hello").authenticated();
                         request.requestMatchers("/other").hasRole("read");
