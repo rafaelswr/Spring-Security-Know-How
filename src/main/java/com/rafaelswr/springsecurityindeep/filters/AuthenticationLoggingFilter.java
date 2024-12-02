@@ -26,7 +26,6 @@ public class AuthenticationLoggingFilter extends OncePerRequestFilter {
     }
 
 
-
      /*
     WHEN implements Filter {...}
 

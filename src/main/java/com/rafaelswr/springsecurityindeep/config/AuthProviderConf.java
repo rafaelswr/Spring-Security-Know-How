@@ -39,6 +39,7 @@ public class AuthProviderConf implements AuthenticationProvider {
 
         System.out.println("USER FOUND: "+findUser.getUsername()+","+findUser.getPassword());
 
+
         if (findUser.getUsername().equals(username) && passwordEncoder.matches(password, findUser.getPassword())) {
             return new UsernamePasswordAuthenticationToken(username, password, findUser.getAuthorities());
         } else {
