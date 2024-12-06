@@ -1,8 +1,8 @@
 package com.rafaelswr.springsecurityindeep.config;
 
+import com.rafaelswr.springsecurityindeep.authHandlerConfig.AuthFailureHandler;
+import com.rafaelswr.springsecurityindeep.authHandlerConfig.AuthSuccessHandler;
 import com.rafaelswr.springsecurityindeep.filters.AuthenticationLoggingFilter;
-import com.rafaelswr.springsecurityindeep.filters.RequestValidationFilter;
-import com.rafaelswr.springsecurityindeep.filters.StaticKeyAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,10 +16,17 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableWebSecurity
 public class AuthFilter {
 
+    private final AuthFailureHandler authFailureHandler;
+
+    private final AuthSuccessHandler authSuccessHandler;
+
+
     private final AuthProviderConf authenticationProvider;
 
     @Autowired
-    public AuthFilter(AuthProviderConf authenticationProvider) {
+    public AuthFilter(AuthFailureHandler authFailureHandler, AuthSuccessHandler authSuccessHandler, AuthProviderConf authenticationProvider) {
+        this.authFailureHandler = authFailureHandler;
+        this.authSuccessHandler = authSuccessHandler;
         this.authenticationProvider = authenticationProvider;
     }
 
@@ -28,12 +35,15 @@ public class AuthFilter {
 
             // (Demo) Filter that validates if the request contains a header called 'Request-ID' (example),
             // and another one after the BasicAuthenticationFilter to log the value of the 'Request-ID' header.
-           /* httpSecurity.addFilterBefore(new RequestValidationFilter(), BasicAuthenticationFilter.class)
+            /*httpSecurity.addFilterBefore(new RequestValidationFilter(), BasicAuthenticationFilter.class)
                     .addFilterAt(new StaticKeyAuthenticationFilter(), BasicAuthenticationFilter.class).addFilterAfter(new AuthenticationLoggingFilter(), BasicAuthenticationFilter.class);
-*/
+            */
+            httpSecurity.addFilterAt(new AuthenticationLoggingFilter(), BasicAuthenticationFilter.class);
 
-
-            httpSecurity.httpBasic(Customizer.withDefaults());
+            httpSecurity.httpBasic(c->{
+                c.realmName("USER ACCESS");
+                c.authenticationEntryPoint(new CustomEntryPoint());
+            });
 
             httpSecurity.authorizeHttpRequests(request->{
                         request.requestMatchers("/hello").authenticated();
@@ -41,8 +51,8 @@ public class AuthFilter {
                         request.requestMatchers("/salir").authenticated();
                         request.requestMatchers("/user/create").permitAll();
                         request.anyRequest().permitAll();
-
                     }).formLogin(Customizer.withDefaults());
+
             httpSecurity.logout(logout->{
                 logout.logoutUrl("/custom-logout");
                 logout.invalidateHttpSession(true);
