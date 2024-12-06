@@ -51,7 +51,10 @@ public class AuthFilter {
                         request.requestMatchers("/salir").authenticated();
                         request.requestMatchers("/user/create").permitAll();
                         request.anyRequest().permitAll();
-                    }).formLogin(Customizer.withDefaults());
+                    }).formLogin(c->{
+                        c.defaultSuccessUrl("/home",true)
+                                .successHandler(authSuccessHandler)
+                                .failureHandler(authFailureHandler);});
 
             httpSecurity.logout(logout->{
                 logout.logoutUrl("/custom-logout");

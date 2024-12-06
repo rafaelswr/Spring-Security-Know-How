@@ -17,9 +17,13 @@ public class AuthenticationLoggingFilter extends OncePerRequestFilter {
      sure that the filter’s doFilter() method is executed only one time per request.*/
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String requestId = request.getHeader("Request-Id");
+        String responseMessage = response.getHeader("message");
 
-        logger.info("Successfully authenticated wiht ID: " + requestId);
+        if(responseMessage != null){
+            logger.info("Message: " + responseMessage);
+        }else{
+            logger.info("Só recebi agora :D");
+        }
 
         filterChain.doFilter(request, response);
 
