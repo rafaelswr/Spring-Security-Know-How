@@ -1,6 +1,6 @@
 package com.rafaelswr.springsecurityindeep.config;
 
-import com.rafaelswr.springsecurityindeep.model.AuthUser;
+import com.rafaelswr.springsecurityindeep.controller.HelloController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -13,13 +13,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Array;
-import java.util.List;
+import java.util.logging.Logger;
 
 @Component
 @EnableGlobalAuthentication
 public class AuthProviderConf implements AuthenticationProvider {
 
+    private final Logger logger = Logger.getLogger(AuthProviderConf.class.getName());
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
@@ -36,6 +36,7 @@ public class AuthProviderConf implements AuthenticationProvider {
 
         //UserDetails findUser = userDetailsService.loadUserByUsername(username);
         UserDetails findUser = userDetailsService.loadUserByUsername(username);
+        logger.info("USER:" + findUser);
 
         System.out.println("USER FOUND: "+findUser.getUsername()+","+findUser.getPassword());
 

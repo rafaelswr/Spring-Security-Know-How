@@ -6,6 +6,7 @@ import com.rafaelswr.springsecurityindeep.filters.AuthenticationLoggingFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -46,10 +47,10 @@ public class AuthFilter {
             });
 
             httpSecurity.authorizeHttpRequests(request->{
-                        request.requestMatchers("/hello").authenticated();
-                        request.requestMatchers("/other").hasRole("read");
-                        request.requestMatchers("/salir").authenticated();
-                        request.requestMatchers("/user/create").permitAll();
+                        request.requestMatchers(HttpMethod.GET,"/hello/**").authenticated();
+                        request.requestMatchers(HttpMethod.GET, "/*/other").hasAuthority("read");
+                        request.requestMatchers("/user/{code:^[0-9]*$}").authenticated();
+                        request.requestMatchers(HttpMethod.POST, "/user/create").permitAll();
                         request.anyRequest().permitAll();
                     }).formLogin(c->{
                         c.defaultSuccessUrl("/home",true)
@@ -57,7 +58,7 @@ public class AuthFilter {
                                 .failureHandler(authFailureHandler);});
 
             httpSecurity.logout(logout->{
-                logout.logoutUrl("/custom-logout");
+                logout.logoutUrl("/logout");
                 logout.invalidateHttpSession(true);
                 logout.clearAuthentication(true);
             });

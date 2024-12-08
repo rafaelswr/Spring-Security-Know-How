@@ -5,14 +5,10 @@ import com.rafaelswr.springsecurityindeep.model.SimpleUser;
 import com.rafaelswr.springsecurityindeep.repository.AuthUserRepository;
 import jakarta.persistence.PersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.encrypt.Encryptors;
-import org.springframework.security.crypto.encrypt.TextEncryptor;
-import org.springframework.security.crypto.keygen.KeyGenerators;
-import org.springframework.security.crypto.keygen.StringKeyGenerator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class AuthUserService {
@@ -40,5 +36,9 @@ public class AuthUserService {
             throw new PersistenceException("Failed to save or enable user.");
         }
 
+    }
+
+    public Optional<AuthUser> findUserById(Integer id) {
+         return authUserRepository.findById(id);
     }
 }

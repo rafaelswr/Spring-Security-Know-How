@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 import java.util.concurrent.*;
 import java.util.logging.Logger;
 
@@ -38,7 +39,7 @@ public class HelloController {
         return new ResponseEntity<>("Hello " + auth.getName() + "!!", HttpStatus.OK);
     }
 
-    @GetMapping("/other")
+    @GetMapping("/user/other")
     public ResponseEntity<String> sayOther(){
         return new ResponseEntity<>("Only if you have READ privileges!", HttpStatus.OK);
     }
@@ -73,6 +74,11 @@ public class HelloController {
     @PostMapping("/user/create")
     public ResponseEntity<String> createUserForAuth(@RequestBody AuthUser authUser){
         return new ResponseEntity<>(authUserService.createUser(authUser), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<Optional<AuthUser>> findUserById(@PathVariable Integer id){
+        return new ResponseEntity<>(authUserService.findUserById(id), HttpStatus.OK);
     }
 
 }
