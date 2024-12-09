@@ -3,6 +3,7 @@ package com.rafaelswr.springsecurityindeep.config;
 import com.rafaelswr.springsecurityindeep.authHandlerConfig.AuthFailureHandler;
 import com.rafaelswr.springsecurityindeep.authHandlerConfig.AuthSuccessHandler;
 import com.rafaelswr.springsecurityindeep.filters.AuthenticationLoggingFilter;
+import com.rafaelswr.springsecurityindeep.filters.CsrfTokenLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.csrf.CsrfFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -39,7 +41,7 @@ public class AuthFilter {
             /*httpSecurity.addFilterBefore(new RequestValidationFilter(), BasicAuthenticationFilter.class)
                     .addFilterAt(new StaticKeyAuthenticationFilter(), BasicAuthenticationFilter.class).addFilterAfter(new AuthenticationLoggingFilter(), BasicAuthenticationFilter.class);
             */
-            httpSecurity.addFilterAt(new AuthenticationLoggingFilter(), BasicAuthenticationFilter.class);
+            httpSecurity.addFilterAfter(new CsrfTokenLogger(), CsrfFilter.class);
 
             httpSecurity.httpBasic(c->{
                 c.realmName("USER ACCESS");
@@ -65,7 +67,7 @@ public class AuthFilter {
 
             httpSecurity.authenticationProvider(authenticationProvider);
 
-            httpSecurity.csrf().disable();
+           // httpSecurity.csrf().disable();
 
             return httpSecurity.build();
     }

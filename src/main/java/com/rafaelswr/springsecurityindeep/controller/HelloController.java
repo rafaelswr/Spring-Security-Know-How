@@ -81,4 +81,9 @@ public class HelloController {
         return new ResponseEntity<>(authUserService.findUserById(id), HttpStatus.OK);
     }
 
+    @PostMapping("/hello")
+    public String postHello(){
+        return "POST Hello !";
+    }
+
 }

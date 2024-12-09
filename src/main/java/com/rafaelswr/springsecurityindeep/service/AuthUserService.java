@@ -19,7 +19,7 @@ public class AuthUserService {
     @Autowired
     public AuthUserService(AuthUserRepository authUserRepository, PasswordEncoder passwordEncoder) {
         this.authUserRepository = authUserRepository;
-        this.passwordEncoder = passwordEncoder ;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public String createUser(AuthUser authUser) {
