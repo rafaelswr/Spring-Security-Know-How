@@ -18,6 +18,11 @@ public class MvcController {
     public String home(){
         return "home.html";
     }
+
+    @GetMapping("/main")
+    public String main(){
+        return "main.html";
+    }
     @PostMapping("/product/add")
     public String add(@RequestParam String name) {
         logger.info("Adding product " + name);

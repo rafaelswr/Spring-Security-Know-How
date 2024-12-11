@@ -1,7 +1,6 @@
 package com.rafaelswr.springsecurityindeep.filters;
 
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
+import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -11,17 +10,17 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-public class CsrfTokenLogger extends OncePerRequestFilter {
+public class CsrfTokenLogger implements Filter {
 
     private final Logger logger = Logger.getLogger(CsrfTokenLogger.class.getName());
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
 
-        logger.info("TOKEN CSRF: " + token.getToken());
+        logger.info("TOKEN STRING CSRF: " + token.getToken());
 
-        filterChain.doFilter(request, response);
+        chain.doFilter(request, response);
     }
 }
