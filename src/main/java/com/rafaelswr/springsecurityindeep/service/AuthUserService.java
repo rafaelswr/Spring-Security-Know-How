@@ -5,6 +5,9 @@ import com.rafaelswr.springsecurityindeep.model.SimpleUser;
 import com.rafaelswr.springsecurityindeep.repository.AuthUserRepository;
 import jakarta.persistence.PersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +41,14 @@ public class AuthUserService {
 
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @PostAuthorize("returnObject.isPresent() && returnObject.get().getUsername() == authentication.principal")
     public Optional<AuthUser> findUserById(Integer id) {
          return authUserRepository.findById(id);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    public String getUsername(Authentication auth) {
+        return auth.getName();
     }
 }

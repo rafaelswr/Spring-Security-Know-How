@@ -51,7 +51,8 @@ public class AuthFilter {
             httpSecurity.authorizeHttpRequests(request->{
                         request.requestMatchers(HttpMethod.GET,"/hello/**").authenticated();
                         request.requestMatchers(HttpMethod.GET, "/*/other").hasAuthority("read");
-                        request.requestMatchers("/user/{code:^[0-9]*$}").permitAll();
+                        request.requestMatchers("/user/\\d+").authenticated();
+                        // request.requestMatchers("/user/{code:^[0-9]*$}").permitAll();
                         request.requestMatchers(HttpMethod.POST, "/user/create").permitAll();
                         request.anyRequest().authenticated();
                     }).formLogin(c->{

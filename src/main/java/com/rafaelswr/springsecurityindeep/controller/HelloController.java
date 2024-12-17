@@ -7,13 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.security.concurrent.DelegatingSecurityContextCallable;
-import org.springframework.security.concurrent.DelegatingSecurityContextExecutor;
 import org.springframework.security.concurrent.DelegatingSecurityContextExecutorService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -27,7 +23,9 @@ public class HelloController {
 
     private final Logger logger = Logger.getLogger(HelloController.class.getName());
 
-    public final AuthUserService authUserService;
+    private final AuthUserService authUserService;
+
+
 
     @Autowired
     public HelloController(AuthUserService authUserService) {
@@ -71,6 +69,13 @@ public class HelloController {
         logger.info("User: , " + username);
     }
 
+    @GetMapping("/username")
+    public ResponseEntity<String> getUserName(Authentication auth ) {
+        logger.info("PRINCIPAL: " + auth.getPrincipal().toString());
+        return new ResponseEntity<>(authUserService.getUsername(auth), HttpStatus.OK);
+    }
+
+
     @PostMapping("/user/create")
     public ResponseEntity<String> createUserForAuth(@RequestBody AuthUser authUser){
         return new ResponseEntity<>(authUserService.createUser(authUser), HttpStatus.CREATED);
@@ -85,5 +90,7 @@ public class HelloController {
     public String postHello(){
         return "POST Hello !";
     }
+
+
 
 }
