@@ -41,7 +41,7 @@ public class AuthFilter {
             /*httpSecurity.addFilterBefore(new RequestValidationFilter(), BasicAuthenticationFilter.class)
                     .addFilterAt(new StaticKeyAuthenticationFilter(), BasicAuthenticationFilter.class).addFilterAfter(new AuthenticationLoggingFilter(), BasicAuthenticationFilter.class);
             */
-            httpSecurity.addFilterAfter(new CsrfTokenLogger(), CsrfFilter.class);
+          //  httpSecurity.addFilterAfter(new CsrfTokenLogger(), CsrfFilter.class);
 
             httpSecurity.httpBasic(c->{
                 c.realmName("USER ACCESS");
@@ -68,7 +68,7 @@ public class AuthFilter {
 
             httpSecurity.authenticationProvider(authenticationProvider);
 
-            //httpSecurity.csrf().disable();
+            httpSecurity.csrf().disable();
 
             return httpSecurity.build();
     }

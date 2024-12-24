@@ -1,5 +1,7 @@
 package com.rafaelswr.springsecurityindeep.controller;
 
+import com.rafaelswr.springsecurityindeep.methodAuthorization.Document;
+import com.rafaelswr.springsecurityindeep.methodAuthorization.DocumentRepository;
 import com.rafaelswr.springsecurityindeep.model.AuthUser;
 import com.rafaelswr.springsecurityindeep.service.AuthUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +26,13 @@ public class HelloController {
     private final Logger logger = Logger.getLogger(HelloController.class.getName());
 
     private final AuthUserService authUserService;
-
+    private final DocumentRepository documentRepository;
 
 
     @Autowired
-    public HelloController(AuthUserService authUserService) {
+    public HelloController(AuthUserService authUserService, DocumentRepository documentRepository) {
         this.authUserService = authUserService;
+        this.documentRepository = documentRepository;
     }
 
     @GetMapping("/hello")
@@ -90,7 +93,6 @@ public class HelloController {
     public String postHello(){
         return "POST Hello !";
     }
-
 
 
 }
