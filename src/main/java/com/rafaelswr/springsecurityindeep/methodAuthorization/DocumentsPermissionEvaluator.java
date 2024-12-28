@@ -37,15 +37,9 @@ public class DocumentsPermissionEvaluator implements PermissionEvaluator {
         Document doc = documentRepository.findDocumentById(id);
 
         var isOwner = doc.getOwner().equals(authentication.getName());
-        var isAdmin = authentication.getAuthorities().stream().anyMatch(ele->ele.getAuthority().equals("ROLE_admin"));
-
-        logger.info("isOwner: " + isOwner);
-
-        logger.info("isAdmin: "  + isAdmin);
+        var isAdmin = authentication.getAuthorities().stream().anyMatch(ele->ele.getAuthority().equals("ROLE_" + perm));
 
         return isOwner || isAdmin;
-
-
      }
 
 }
